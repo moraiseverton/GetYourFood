@@ -9,8 +9,6 @@ SkipTheDishes São Paulo Recruiting Fair
 * Run the command: 
 
 ```
-#!cmd
-
 mvn test
 ```
 
@@ -18,24 +16,28 @@ mvn test
 * Open the Terminal
 * Go to the location of the project
 * Run the command: 
-```
-#!cmd
 
+```
 mvn spring-boot:run
 ```
 
 ### Endpoints ###
 * [http://localhost:8080/api/v1/swagger-ui.html](Link URL)
 
+
 ### H2 Database Console ###
 * On the browser, access: [http://localhost:8080/api/v1/h2-console/](Link URL)
 * Fill the field JDBC URL with: **jdbc:h2:mem:testdb**
 * Press **Connect** button
 
+
 ### Notes ###
+* Feedbacks: **esdmorais@gmail.com**
+* I used spring boot, H2 database and Hibernate to save some time;
 * I used TDD to develop most of parts. Almost all the relevant services and repositories are tested;
 * I splitted my project into pieces to help me to organize what shoud I do first, ordering by relevance:
 
+```
 - create project using spring initializr OK
 - configure swagger OK
 - run at least one time to see if it's working OK
@@ -64,6 +66,7 @@ Order
 Customer
 14) POST /api/v1/Customer/auth (100 minutes!)
 11) POST /api/v1/Customer OK (need to response the auth token)
+```
 
 
 
