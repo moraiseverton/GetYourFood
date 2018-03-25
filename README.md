@@ -22,20 +22,20 @@ mvn spring-boot:run
 ```
 
 ### Endpoints ###
-* [http://localhost:8080/api/v1/swagger-ui.html](Link URL)
+* [Click here](http://localhost:8080/api/v1/swagger-ui.html)
 
 
 ### H2 Database Console ###
-* On the browser, access: [http://localhost:8080/api/v1/h2-console/](Link URL)
+* On the browser, access [this link](http://localhost:8080/api/v1/h2-console/)
 * Fill the field JDBC URL with: **jdbc:h2:mem:testdb**
 * Press **Connect** button
 
 
 ### Notes ###
 * Feedbacks: **esdmorais@gmail.com**
-* I used spring boot, H2 database and Hibernate to save some time;
+* I used Spring boot, H2 database and Hibernate to save some time;
 * I used TDD to develop most of parts. Almost all the relevant services and repositories are tested;
-* I splitted my project into pieces to help me to organize what shoud I do first, ordering by relevance:
+* I splitted my project into pieces to help me to organize what I shoud do first, sorting by relevance:
 
 ```
 - create project using spring initializr OK
