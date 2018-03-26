@@ -1,6 +1,6 @@
 package br.com.getyourfood.customer;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,6 +24,7 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 public class Customer {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true)
@@ -35,8 +36,7 @@ public class Customer {
 
     private @NonNull String address;
 
-    private Instant creation;
+    private LocalDateTime creation;
 
     private @NonNull String password;
-
 }

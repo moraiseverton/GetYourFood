@@ -1,11 +1,15 @@
 package br.com.getyourfood.order;
 
+import static org.hamcrest.core.Is.is;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.Collections;
 
 import org.junit.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -20,17 +24,18 @@ public class OrderControllerTest extends BaseControllerTest {
     private OrderController controller;
 
     @Test
-    public void createNewCustomer() throws Exception {
+    public void createNewOrder() throws Exception {
         Customer customer = new Customer();
         customer.setId(123l);
         customer.setName("Phoebe Buffay");
         customer.setEmail("phoebe@buffay.com");
         customer.setAddress("555 Paulista Ave, Sao Paulo, Sao Paulo, Brazil");
         customer.setPassword("friends");
-        customer.setCreation(Instant.now());
+        customer.setCreation(LocalDateTime.now());
 
         Order order = new Order();
         order.setCustomer(customer);
+        order.setOrderItems(Collections.singletonList(new OrderItem()));
 
         StringBuffer jsonContent = new StringBuffer();
         jsonContent.append("{") 
@@ -61,8 +66,28 @@ public class OrderControllerTest extends BaseControllerTest {
 
         given(controller.createNewOrder(order)).willReturn(order);
 
-        mockMvc.perform(post("/Customer").contentType(APPLICATION_JSON).content(jsonContent.toString()))
-                .andExpect(status().isOk())
-                .andDo(MockMvcResultHandlers.print());
+        mockMvc.perform(post("/Order").contentType(APPLICATION_JSON).content(jsonContent.toString()))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void findOrderByOrderId() throws Exception {
+        Customer customer = new Customer();
+        customer.setId(123l);
+        customer.setName("Phoebe Buffay");
+        customer.setEmail("phoebe@buffay.com");
+        customer.setAddress("555 Paulista Ave, Sao Paulo, Sao Paulo, Brazil");
+        customer.setPassword("friends");
+        customer.setCreation(LocalDateTime.now());
+
+        Order order = new Order();
+        order.setId(123l);
+        order.setCustomer(customer);
+
+        given(controller.findById(order.getId())).willReturn(order);
+
+        mockMvc.perform(get("/Order/{orderId}", order.getId()).contentType(APPLICATION_JSON)).andExpect(status().isOk())
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(jsonPath("$.id", is(order.getId().intValue())));
     }
 }

@@ -74,7 +74,7 @@ public class CousineControllerTest extends BaseControllerTest {
     }
 
     @Test
-    public void findStoresByCousineId() throws Exception {
+    public void findCousinesByCousineId() throws Exception {
         Cousine canadian = new Cousine("Canadian");
         canadian.setId(2l);
 

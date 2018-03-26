@@ -1,8 +1,10 @@
 package br.com.getyourfood.order;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -60,12 +62,12 @@ public class Order {
     @Column(insertable = false, updatable = false)
     private @NonNull Long storeId;
 
-    @OneToMany(mappedBy = "theOrder", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "theOrder", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private @NonNull List<OrderItem> orderItems;
 
     private Double total;
 
     private @NonNull String status;
 
-    private Date lastUpdate;
+    private LocalDateTime lastUpdate;
 }
