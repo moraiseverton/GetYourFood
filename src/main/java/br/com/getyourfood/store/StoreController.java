@@ -30,7 +30,7 @@ public class StoreController {
 
     @GetMapping("/search/{searchText}")
     public List<Store> searchStores(@PathVariable("searchText") String searchText) {
-       return storeRepository.searchByName(searchText);
+       return storeRepository.searchByName(searchText.toLowerCase());
     }
 
     @GetMapping("/{storeId}")

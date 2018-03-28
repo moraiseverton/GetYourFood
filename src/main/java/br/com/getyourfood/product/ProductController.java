@@ -24,7 +24,7 @@ public class ProductController {
 
     @GetMapping("/search/{searchText}")
     public List<Product> searchProducts(@PathVariable("searchText") String searchText) {
-        return repository.searchByName(searchText);
+        return repository.searchByName(searchText.toLowerCase());
     }
 
     @GetMapping("/{productId}")

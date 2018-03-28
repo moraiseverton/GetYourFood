@@ -31,7 +31,7 @@ public class CousineController {
 
     @GetMapping("/search/{searchText}")
     public List<Cousine> searchCousines(@PathVariable("searchText") String searchText) {
-        return cousineRepository.searchByText(searchText);
+        return cousineRepository.searchByText(searchText.toLowerCase());
     }
 
     @GetMapping("/{cousineId}/stores")
