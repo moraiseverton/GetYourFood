@@ -2,6 +2,7 @@ package br.com.getyourfood.cousine;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,14 +16,11 @@ import br.com.getyourfood.store.StoreRepository;
 @RequestMapping(value = "/Cousine", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CousineController {
 
+    @Autowired
     private CousineRepository cousineRepository;
 
+    @Autowired
     private StoreRepository storeRepository;
-
-    public CousineController(CousineRepository repository, StoreRepository storeRepository) {
-        this.cousineRepository = repository;
-        this.storeRepository = storeRepository;
-    }
 
     @GetMapping
     public List<Cousine> listAllCousines() {

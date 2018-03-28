@@ -2,6 +2,7 @@ package br.com.getyourfood.store;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,13 +16,11 @@ import br.com.getyourfood.product.ProductRepository;
 @RequestMapping(value = "/Store", produces = MediaType.APPLICATION_JSON_VALUE)
 public class StoreController {
 
+    @Autowired
     private StoreRepository storeRepository;
-    private ProductRepository productRepository;
 
-    public StoreController(StoreRepository repository, ProductRepository productRepository) {
-        this.storeRepository = repository;
-        this.productRepository = productRepository;
-    }
+    @Autowired
+    private ProductRepository productRepository;
 
     @GetMapping
     public List<Store> listAllStores() {
