@@ -14,20 +14,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductController {
 
     @Autowired
-    private ProductRepository repository;
+    private ProductService service;
 
     @GetMapping
     public List<Product> listAllProducts() {
-        return repository.findAll();
+        return service.listAllProducts();
     }
 
     @GetMapping("/search/{searchText}")
     public List<Product> searchProducts(@PathVariable("searchText") String searchText) {
-        return repository.searchByName(searchText.toLowerCase());
+        return service.searchProductsByNameOrDescription(searchText.toLowerCase());
     }
 
     @GetMapping("/{productId}")
     public Product findById(@PathVariable("productId") Long productId) {
-        return repository.findById(productId).get();
+        return service.findProductById(productId);
     }
 }

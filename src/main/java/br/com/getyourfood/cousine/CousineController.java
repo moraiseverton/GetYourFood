@@ -10,30 +10,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.getyourfood.store.Store;
-import br.com.getyourfood.store.StoreRepository;
 
 @RestController
 @RequestMapping(value = "/Cousine", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CousineController {
 
     @Autowired
-    private CousineRepository cousineRepository;
-
-    @Autowired
-    private StoreRepository storeRepository;
+    private CousineService service;
 
     @GetMapping
     public List<Cousine> listAllCousines() {
-        return cousineRepository.findAll();
+        return service.listAllCousines();
     }
 
     @GetMapping("/search/{searchText}")
     public List<Cousine> searchCousines(@PathVariable("searchText") String searchText) {
-        return cousineRepository.searchByText(searchText.toLowerCase());
+        return service.searchCousinesByText(searchText);
     }
 
     @GetMapping("/{cousineId}/stores")
     public List<Store> findStoresByCousineId(@PathVariable("cousineId") Long cousineId) {
-        return storeRepository.findAllByCousineId(cousineId);
+        return service.findStoresByCousineId(cousineId);
     }
 }
