@@ -25,7 +25,7 @@ public class StoreController {
 
     @GetMapping("/search/{searchText}")
     public List<Store> searchStores(@PathVariable("searchText") String searchText) {
-       return storeRepository.searchStoresByName(searchText.toLowerCase());
+       return storeRepository.searchStoresByName(searchText);
     }
 
     @GetMapping("/{storeId}")

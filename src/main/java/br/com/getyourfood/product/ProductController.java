@@ -23,7 +23,7 @@ public class ProductController {
 
     @GetMapping("/search/{searchText}")
     public List<Product> searchProducts(@PathVariable("searchText") String searchText) {
-        return service.searchProductsByNameOrDescription(searchText.toLowerCase());
+        return service.searchProductsByNameOrDescription(searchText);
     }
 
     @GetMapping("/{productId}")
