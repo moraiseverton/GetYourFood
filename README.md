@@ -62,12 +62,9 @@ Product OK!
 Order
 13) GET  /api/v1/Order/{orderId} OK
 12) POST /api/v1/Order OK 
-15) GET  /api/v1/Order/customer OK (need to create a unit test)
+15) GET  /api/v1/Order/customer OK
 
 Customer
-14) POST /api/v1/Customer/auth OK (need to fix the unit test)
+14) POST /api/v1/Customer/auth OK
 11) POST /api/v1/Customer OK 
 ```
-
-
-
