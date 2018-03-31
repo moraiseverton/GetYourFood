@@ -5,6 +5,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,28 +28,20 @@ public class CustomerController {
     private AuthProviderService authService;
 
     @PostMapping
-    public String createNewCustomer(@Valid @RequestBody Customer customer) {
-        service.createNewCustomer(customer);
-        return auth(customer.getEmail(), customer.getPassword());
+    @ResponseStatus(HttpStatus.CREATED)
+    public Customer createNewCustomer(@Valid @RequestBody Customer customer) {
+        return service.createNewCustomer(customer);
     }
 
     @PostMapping("/auth")
-    public String auth(@RequestParam("email") String email, @RequestParam("password") String password) {
+    public ResponseEntity<String> auth(@RequestParam("email") String email, @RequestParam("password") String password) {
         UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(email, password);
         Authentication auth = authService.authenticate(credentials);
+
         if (auth != null) {
-            return success(auth);
+            return ResponseEntity.ok("Logged as " + auth.getName() + ".");
         }
-        return invalidCustomer();
-    }
 
-    @ResponseStatus(HttpStatus.OK)
-    private String success(Authentication auth) {
-        return " { \"message\": 'Logged as " + auth.getName() + ".' } ";
-    }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    private String invalidCustomer() {
-        return "{ \"error\": 'User and password not found.' }";
+        return ResponseEntity.badRequest().body("User and password not found.");
     }
 }

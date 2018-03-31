@@ -1,17 +1,17 @@
 package br.com.getyourfood.customer;
 
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.time.LocalDateTime;
-
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.getyourfood.base.BaseControllerTest;
 
@@ -28,40 +28,41 @@ public class CustomerControllerTest extends BaseControllerTest {
         customer.setEmail("phoebe@buffay.com");
         customer.setAddress("555 Paulista Ave, Sao Paulo, Sao Paulo, Brazil");
         customer.setPassword("friends");
-        customer.setCreation(LocalDateTime.now());
 
-        StringBuffer jsonContent = new StringBuffer();
-        jsonContent.append("{")
-                   .append("      \"email\":    \"" + customer.getEmail())
-                   .append("\"  , \"name\":     \"" + customer.getName())
-                   .append("\"  , \"address\":  \"" + customer.getAddress())
-                   .append("\"  , \"creation\": \"" + customer.getCreation().toString())
-                   .append("\"  , \"password\": \"" + customer.getPassword())
-                   .append("\" }");
+        given(controller.createNewCustomer(customer)).willReturn(customer);
 
-        given(controller.createNewCustomer(customer)).willReturn(" { \"message\": 'Logged as " + customer.getEmail() + ".' } ");
-
-        mockMvc.perform(post("/Customer").contentType(APPLICATION_JSON).accept(MediaType.APPLICATION_JSON_UTF8_VALUE).content(jsonContent.toString()))
-                .andExpect(status().isOk());
+        mockMvc.perform(post("/Customer")
+                .contentType(APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(customer)))
+                .andExpect(status().isCreated());
     }
 
     @Test
-    @Ignore
     public void authInvalidCustomer() throws Exception {
         String email = "phoebe@buffay.com";
         String password = "wrong password";
 
-        StringBuffer jsonContent = new StringBuffer();
-        jsonContent.append("{")
-                   .append("      \"email\":    \"" + email)
-                   .append("\"  , \"password\": \"" + password)
-                   .append("\" }");
+        ResponseEntity<String> response = ResponseEntity.badRequest().body("User and password not found.");
 
-        // TODO: find out what is going on
-        when(controller.auth(email, password)).thenReturn("{ \"error\": 'User and password not found.' }");
+        given(controller.auth(email, password)).willReturn(response);
 
         mockMvc.perform(post("/Customer/auth").param("email", email).param("password", password)
-                .contentType(APPLICATION_JSON).accept(MediaType.APPLICATION_JSON_UTF8_VALUE).content(jsonContent.toString()))
-                .andExpect(status().isBadRequest());
+                .contentType(APPLICATION_JSON).accept(APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("User and password not found."));
+    }
+
+    @Test
+    public void authValidCustomer() throws Exception {
+        String email = "phoebe@buffay.com";
+        String password = "friends";
+
+        ResponseEntity<String> response = ResponseEntity.ok("Logged as " + email + ".");
+
+        given(controller.auth(email, password)).willReturn(response);
+
+        mockMvc.perform(post("/Customer/auth").param("email", email).param("password", password)
+                .contentType(APPLICATION_JSON).accept(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Logged as phoebe@buffay.com."));
     }
 }
